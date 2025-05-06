@@ -1,3 +1,5 @@
+import Connect from './Connect'
+
 class TabListModel {
   icon: ResourceStr = ''
   title: string = ''
@@ -49,6 +51,15 @@ struct Index {
       Tabs() {
         ForEach(this.TabList, (item: TabListModel, index: number) => {
           TabContent() {
+            if (index === 0) {
+              Text('微信')
+            } else if (index === 1) {
+              Connect()
+            } else if (index === 2) {
+              Text('发现')
+            } else if (index === 3) {
+              Text('我的')
+            }
           }
           .tabBar(this.tabBuilder(item, index))
         })
