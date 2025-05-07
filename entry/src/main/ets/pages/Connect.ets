@@ -1,3 +1,5 @@
+import { defaultUserList, UserList } from '../Model/users'
+
 @Component
 struct Connect {
   build() {
@@ -12,15 +14,15 @@ struct Connect {
 
       //联系人列表
       List() {
-        ForEach([1, 2, 3, 4, 5, 6, 7, 8, 9], () => {
+        ForEach(defaultUserList, (item: UserList) => {
           ListItem() {
             Row({ space: 10 }) {
-              Image('https://img2.baidu.com/it/u=2778471297,524433918&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500')
+              Image(item.avatar)
                 .width(30)
                 .height(30)
                 .borderRadius(5)
               Row() {
-                Text('小趴菜')
+                Text(item.username)
                   .fontSize(14)
                   .fontColor($r('app.color.text_primary'))
               }
@@ -41,7 +43,6 @@ struct Connect {
             })
           }
         })
-
       }
       .width('100%')
       .height('100%')
