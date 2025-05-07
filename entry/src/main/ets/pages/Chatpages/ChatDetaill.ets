@@ -1,5 +1,6 @@
 import router from '@ohos.router'
 import { UserList } from '../../Model/users'
+import { BottomInput } from './BottomInput'
 
 
 @Entry
@@ -33,6 +34,11 @@ struct ChatDetaill {
       }
       .height(50)
 
+      //内容布局
+      Blank()
+
+      //底部布局
+      BottomInput()
     }
     .width("100%")
     .height("100%")
