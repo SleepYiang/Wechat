@@ -1,7 +1,13 @@
+import { promptAction } from '@kit.ArkUI'
+
 @Component
 export struct BottomInput {
+  //保存输入框输入内容
+  @State content: string = ''
   @State
   ShowVice: boolean = false
+  sendTextMessage: (content: string) => void = () => {
+  }
 
   build() {
     Column() {
@@ -23,11 +29,21 @@ export struct BottomInput {
             .borderRadius(2)
             .height(35)
         } else {
-          TextInput()
+          TextInput({ text: $$this.content })
             .layoutWeight(1)
             .height(35)
             .borderRadius(2)
             .backgroundColor(Color.White)
+            .onSubmit(() => {
+              if (this.content) {
+                this.sendTextMessage(this.content)
+                this.content = ''
+              } else {
+                promptAction.showToast({
+                  message: '内容不能为空'
+                })
+              }
+            })
         }
 
 

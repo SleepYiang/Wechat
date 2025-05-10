@@ -1,5 +1,5 @@
 import router from '@ohos.router'
-import { messageInfoModel } from '../../Model/massege'
+import { messageInfo, messageInfoModel } from '../../Model/massege'
 import { CurrentUser, UserList } from '../../Model/users'
 import { BottomInput } from './BottomInput'
 import Message from './Message'
@@ -23,7 +23,7 @@ struct ChatDetaill {
       SourceFilePath: '',
       sourceDuration: 0,
       MessageType: 0,
-      MessageContent: '连眀旸是个坏蛋',
+      MessageContent: 'hello',
       ConnectUser: CurrentUser,
     }),
     new messageInfoModel({
@@ -33,7 +33,7 @@ struct ChatDetaill {
       SourceFilePath: '',
       sourceDuration: 0,
       MessageType: 0,
-      MessageContent: '她是乖宝宝',
+      MessageContent: 'hi',
       ConnectUser: CurrentUser,
     }),
     new messageInfoModel({
@@ -47,7 +47,7 @@ struct ChatDetaill {
       SourceFilePath: '',
       sourceDuration: 0,
       MessageType: 0,
-      MessageContent: '她是嘛？',
+      MessageContent: '呕吼',
       ConnectUser: CurrentUser,
     }),
     new messageInfoModel({
@@ -57,10 +57,20 @@ struct ChatDetaill {
       SourceFilePath: '',
       sourceDuration: 0,
       MessageType: 0,
-      MessageContent: '铁铁包是的',
+      MessageContent: '亚比jiojiojio',
       ConnectUser: CurrentUser,
     }),
   ]
+
+  //发送数据
+  sendTextMessage(content: string) {
+    let message = new messageInfoModel({
+      MessageContent: content,
+      SendUser: CurrentUser,
+      ConnectUser: this.talker
+    } as messageInfo)
+    this.MessageList.push(message)
+  }
 
   //起始获取Params的数据
   aboutToAppear(): void {
@@ -105,7 +115,12 @@ struct ChatDetaill {
 
 
       //底部布局
-      BottomInput()
+      BottomInput({
+        sendTextMessage: (content) => {
+          this.sendTextMessage(content)
+        }
+      })
+
     }
     .width("100%")
     .height("100%")
