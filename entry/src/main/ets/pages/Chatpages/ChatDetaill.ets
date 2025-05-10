@@ -62,6 +62,10 @@ struct ChatDetaill {
       ConnectUser: CurrentUser,
     }),
   ]
+  //滚动控键盘
+  scroller: Scroller = new Scroller()
+  //是否是输入状态
+  @State talkerInputIng: boolean = false
 
   //发送数据
   sendTextMessage(content: string) {
@@ -77,6 +81,7 @@ struct ChatDetaill {
   // 机器人回复
   async getResponseMessage(content: string) {
     try {
+      this.talkerInputIng = true
       const result = await getMessageInfo(content)
       let message = new messageInfoModel({
         MessageContent: result?.info.text,
@@ -84,6 +89,8 @@ struct ChatDetaill {
         ConnectUser: this.talker
       } as messageInfo)
       this.MessageList.push(message)
+      this.scroller.scrollEdge(Edge.Bottom)
+      this.talkerInputIng = false
     } catch (e) {
       console.log(e)
     }
@@ -100,7 +107,7 @@ struct ChatDetaill {
       //顶部布局
       Row() {
         Stack({ alignContent: Alignment.Start }) {
-          Text(this.talker.username)
+          Text(this.talkerInputIng ? "对方正在输入" : this.talker.username)
             .width("100%")
             .textAlign(TextAlign.Center)
             .fontSize(16)
