@@ -1,6 +1,7 @@
 import router from '@ohos.router'
 import { UserList } from '../../Model/users'
 import { BottomInput } from './BottomInput'
+import Message from './Message'
 
 
 @Entry
@@ -35,7 +36,18 @@ struct ChatDetaill {
       .height(50)
 
       //内容布局
-      Blank()
+      List({ space: 10 }) {
+        ForEach([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 9, 8, 7, 6, 5, 4, 3, 2, 1], () => {
+          ListItem() {
+            Message()
+          }
+        })
+      }
+      .layoutWeight(1)
+      .backgroundColor($r('app.color.back_color'))
+      .padding({ top: 20, bottom: 10 })
+      .scrollBar(BarState.Off)
+
 
       //底部布局
       BottomInput()
