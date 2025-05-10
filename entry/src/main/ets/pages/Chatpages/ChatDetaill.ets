@@ -1,4 +1,5 @@
 import router from '@ohos.router'
+import { getMessageInfo } from '../../API'
 import { messageInfo, messageInfoModel } from '../../Model/massege'
 import { CurrentUser, UserList } from '../../Model/users'
 import { BottomInput } from './BottomInput'
@@ -70,10 +71,27 @@ struct ChatDetaill {
       ConnectUser: this.talker
     } as messageInfo)
     this.MessageList.push(message)
+    this.getResponseMessage(content)
+  }
+
+  // 机器人回复
+  async getResponseMessage(content: string) {
+    try {
+      const result = await getMessageInfo(content)
+      let message = new messageInfoModel({
+        MessageContent: result?.info.text,
+        SendUser: this.talker,
+        ConnectUser: this.talker
+      } as messageInfo)
+      this.MessageList.push(message)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   //起始获取Params的数据
-  aboutToAppear(): void {
+  aboutToAppear():
+    void {
     this.talker = router.getParams() as UserList
   }
 

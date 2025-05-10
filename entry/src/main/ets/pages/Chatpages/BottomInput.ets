@@ -31,6 +31,9 @@ export struct BottomInput {
         } else {
           TextInput({ text: $$this.content })
             .layoutWeight(1)
+            .id('input')
+            .focusable(true)//设置元素聚焦
+            .defaultFocus(true)//通过defaultFocus开启默认聚焦
             .height(35)
             .borderRadius(2)
             .backgroundColor(Color.White)
@@ -38,6 +41,7 @@ export struct BottomInput {
               if (this.content) {
                 this.sendTextMessage(this.content)
                 this.content = ''
+                focusControl.requestFocus('input')
               } else {
                 promptAction.showToast({
                   message: '内容不能为空'
