@@ -2,6 +2,7 @@ import router from '@ohos.router'
 import { getMessageInfo } from '../../API'
 import { messageInfo, messageInfoModel } from '../../Model/massege'
 import { CurrentUser, UserList } from '../../Model/users'
+import { StoreClass } from '../../utils/StoreClass'
 import { BottomInput } from './BottomInput'
 import Message from './Message'
 
@@ -76,6 +77,8 @@ struct ChatDetaill {
     } as messageInfo)
     this.MessageList.push(message)
     this.getResponseMessage(content)
+    //创建仓库
+    StoreClass.addChatMessage(this.talker.user_id, message)
   }
 
   // 机器人回复
@@ -91,6 +94,8 @@ struct ChatDetaill {
       this.MessageList.push(message)
       this.scroller.scrollEdge(Edge.Bottom)
       this.talkerInputIng = false
+      //添加仓库数据
+      StoreClass.addChatMessage(this.talker.user_id, message)
     } catch (e) {
       console.log(e)
     }

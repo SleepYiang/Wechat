@@ -1,6 +1,7 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { KeyboardAvoidMode, window } from '@kit.ArkUI';
+import { StoreClass } from '../utils/StoreClass';
 
 const DOMAIN = 0x0000;
 
@@ -23,6 +24,8 @@ export default class EntryAbility extends UIAbility {
         hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));
         return;
       }
+      //调用StoreClass中init的方法
+      StoreClass.init(this.context)
       //键盘避让
       windowStage.getMainWindowSync().getUIContext().setKeyboardAvoidMode(KeyboardAvoidMode.RESIZE)
       hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');

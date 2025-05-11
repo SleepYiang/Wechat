@@ -6,18 +6,12 @@ const service = axios.create({
 })
 //请求拦截器
 service.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  AlertDialog.show({
-    message: '1'
-  })
   return config
 }, (error: AxiosError) => {
   return Promise.reject(error);
 });
 //响应拦截器
 service.interceptors.response.use((response: AxiosResponse) => {
-  AlertDialog.show({
-    message: JSON.stringify(response)
-  })
   return response.data.data
 }, (error: AxiosError) => {
   return Promise.reject(error);
