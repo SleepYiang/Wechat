@@ -25,7 +25,6 @@ export class StoreClass {
     //写入到磁盘
     await store.flush()
   }
-
   //删除某个人的数据
   //移除所有数据
   //获取最后一条消息

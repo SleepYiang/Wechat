@@ -1,4 +1,5 @@
 import Connect from './Connect'
+import WeChat from './WeChat'
 
 class TabListModel {
   icon: ResourceStr = ''
@@ -52,7 +53,7 @@ struct Index {
         ForEach(this.TabList, (item: TabListModel, index: number) => {
           TabContent() {
             if (index === 0) {
-              Text('微信')
+             WeChat()
             } else if (index === 1) {
               Connect()
             } else if (index === 2) {
