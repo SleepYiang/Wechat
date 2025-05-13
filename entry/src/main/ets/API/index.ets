@@ -10,5 +10,5 @@ export interface ChatDataInfo {
 }
 
 export const getMessageInfo = (keyword: string): Promise<ChatData> => {
-  return Http.get<ChatData>(`/bot?userid=${Date.now()}&spoken${keyword}`)
+  return Http.get<ChatData>(`/bot?userid=${Date.now()}&spoken=${keyword}`)
 }
