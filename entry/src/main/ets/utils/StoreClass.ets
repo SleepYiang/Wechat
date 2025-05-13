@@ -52,7 +52,7 @@ export class StoreClass {
         lastList.push(chatList[chatList.length-1])
       }
     })
-    lastList.sort((a, b) => a.SendTime - b.SendTime)
+    lastList.sort((a, b) => b.SendTime - a.SendTime)
     return lastList
   }
 }

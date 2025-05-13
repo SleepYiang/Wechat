@@ -1,24 +1,72 @@
+import { messageInfoModel } from '../Model/massege'
+import { StoreClass } from '../utils/StoreClass'
+
 @Component
 struct WeChat {
-  @State List: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
+  @State List: messageInfoModel[] = []
+
+  aboutToAppear(): void {
+    this.List = StoreClass.getAllChatLastMessage()
+  }
+
+  //格式化时间
+  //不是今年
+  //今年：11-11
+  //这个月：12天前
+  //一周星期五
+  //当天;20:52
+  //这一小时之内
+  //这一分钟之内：刚刚
+  transTime(time: number) {
+    //把时间戳准换为UTC时间
+    const dateObj = new Date(time)
+    //获取年
+    const year = dateObj.getFullYear()
+    //获取月
+    const month = dateObj.getMonth() //0-11
+    //获取时
+    const hour = dateObj.getHours()
+    //获取分
+    const minutes = dateObj.getMinutes()
+    //获取日
+    const day = dateObj.getDay()
+    //不是今年
+    if (year === new Date().getFullYear()) {
+      //不是这个月
+      if (month === new Date().getMonth()) {
+        //是不是今天
+        if (day === new Date().getDay()) {
+          return hour.toString().padStart(2, "0") + ':' + minutes.toString().padStart(2, "0")
+        } else {
+          return `${new Date().getDay() - day}天前`
+        }
+      } else {
+        return `${month}月${day}日`
+      }
+
+    } else {
+      return `${year}年${month}月${day}日`
+    }
+
+  }
 
   build() {
     Column() {
       List() {
-        ForEach(this.List, (item: number[]) => {
+        ForEach(this.List, (item: messageInfoModel) => {
           ListItem() {
             Row({ space: 5 }) {
-              Image('https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F373c6d24-1f8b-4000-8dd9-8d8410c35e71%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1708069618&t=51805a82420593c2a3cda47b9f65a80e')
+              Image(item.ConnectUser.avatar)
                 .width(40)
                 .height(40)
                 .borderRadius(5)
               Column() {
                 Row() {
-                  Text('老板')
+                  Text(item.ConnectUser.username)
                     .fontSize(16)
                     .fontColor($r('app.color.text_primary'))
 
-                  Text("00:00")
+                  Text(this.transTime(item.SendTime))
                     .fontSize(12)
                     .fontColor($r('app.color.text_primary'))
                     .margin({ top: 10, })
@@ -26,7 +74,7 @@ struct WeChat {
                 .justifyContent(FlexAlign.SpaceBetween)
                 .width('100%')
 
-                Text('hello brow')
+                Text(item.MessageContent)
                   .maxLines(1)
                   .fontSize(14)
                   .fontColor($r('app.color.text_second'))
