@@ -1,6 +1,7 @@
 import { preferences } from '@kit.ArkData';
 import { messageInfoModel } from '../Model/massege';
 import { defaultUserList, UserList } from '../Model/users';
+import { emitter } from '@kit.BasicServicesKit';
 
 export class StoreClass {
   static context: Context
@@ -25,6 +26,8 @@ export class StoreClass {
     store.putSync(message.id, JSON.stringify(message))
     //写入到磁盘
     await store.flush()
+    //发布消息
+    emitter.emit(StoreClass.Wechat_key)
   }
 
   //获取某个人的全部数据

@@ -1,5 +1,6 @@
 import { messageInfoModel } from '../Model/massege'
 import { StoreClass } from '../utils/StoreClass'
+import { emitter } from '@kit.BasicServicesKit'
 
 @Component
 struct WeChat {
@@ -7,6 +8,11 @@ struct WeChat {
 
   aboutToAppear(): void {
     this.List = StoreClass.getAllChatLastMessage()
+    //订阅消息
+    emitter.on(StoreClass.Wechat_key, () => {
+      //刷新消息列表
+      this.List = StoreClass.getAllChatLastMessage()
+    })
   }
 
   //格式化时间
