@@ -1,6 +1,7 @@
 import { messageInfoModel } from '../Model/massege'
 import { StoreClass } from '../utils/StoreClass'
 import { emitter } from '@kit.BasicServicesKit'
+import { router } from '@kit.ArkUI'
 
 @Component
 struct WeChat {
@@ -92,6 +93,12 @@ struct WeChat {
               .justifyContent(FlexAlign.SpaceBetween)
               .padding({ top: 3, bottom: 3 })
             }
+            .onClick(() => {
+              router.pushUrl({
+                url: 'pages/Chatpages/ChatDetaill',
+                params: item.ConnectUser
+              })
+            })
           }
           .padding({ top: 10, bottom: 10 })
           .stateStyles({

@@ -45,7 +45,22 @@ export class StoreClass {
   }
 
   //删除某个人的数据
-  //移除所有数据
+  static async RemoveChatMessage(userId: string) {
+    //获取操作的仓库
+    const store = StoreClass.getUserStore(userId)
+    //删除仓库指定数据
+    store.deleteSync(userId)
+    //写入磁盘
+    await store.flushSync()
+  }
+
+  //移除某人所有数据
+  static RemoveChatAllMessage(userId: string) {
+    preferences.deletePreferences(StoreClass.context, {
+      name: `${StoreClass.Wechat_key}_${userId}`
+    })
+  }
+
   //获取最后一条消息
   static getAllChatLastMessage() {
     const lastList: messageInfoModel[] = []
