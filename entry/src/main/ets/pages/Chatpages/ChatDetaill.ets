@@ -13,56 +13,7 @@ struct ChatDetaill {
   @State
   talker: UserList = {} as UserList
   //创建聊天列表
-  @State MessageList: messageInfoModel[] = [
-    new messageInfoModel({
-      id: '1',
-      SendUser: {
-        username: 'liuhao',
-        avatar: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F373c6d24-1f8b-4000-8dd9-8d8410c35e71%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1708069618&t=51805a82420593c2a3cda47b9f65a80e',
-        user_id: 'liu'
-      },
-      SendTime: 123456434,
-      SourceFilePath: '',
-      sourceDuration: 0,
-      MessageType: 0,
-      MessageContent: 'hello',
-      ConnectUser: CurrentUser,
-    }),
-    new messageInfoModel({
-      id: '2',
-      SendUser: CurrentUser,
-      SendTime: 123456434,
-      SourceFilePath: '',
-      sourceDuration: 0,
-      MessageType: 0,
-      MessageContent: 'hi',
-      ConnectUser: CurrentUser,
-    }),
-    new messageInfoModel({
-      id: '3',
-      SendUser: {
-        username: 'liuhao',
-        avatar: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F373c6d24-1f8b-4000-8dd9-8d8410c35e71%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1708069618&t=51805a82420593c2a3cda47b9f65a80e',
-        user_id: 'liu'
-      },
-      SendTime: 123456434,
-      SourceFilePath: '',
-      sourceDuration: 0,
-      MessageType: 0,
-      MessageContent: '呕吼',
-      ConnectUser: CurrentUser,
-    }),
-    new messageInfoModel({
-      id: '4',
-      SendUser: CurrentUser,
-      SendTime: 123456434,
-      SourceFilePath: '',
-      sourceDuration: 0,
-      MessageType: 0,
-      MessageContent: '亚比jiojiojio',
-      ConnectUser: CurrentUser,
-    }),
-  ]
+  @State MessageList: messageInfoModel[] = []
   //滚动控键盘
   scroller: Scroller = new Scroller()
   //是否是输入状态
