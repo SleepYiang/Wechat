@@ -11,17 +11,25 @@ struct Message {
   @State
   popupList: PopupItem[] = [{
     title: '听筒播放',
-    icon:
-    $r("app.media.ic_public_ears")
+    icon: $r("app.media.ic_public_ears"),
+    itemClick: () => {
+      AlertDialog.show({
+        message: '1'
+      })
+    }
   },
     {
       title: '收藏',
-      icon: $r("app.media.ic_public_cube")
+      icon: $r("app.media.ic_public_cube"),
+      itemClick: () => {
+        AlertDialog.show({
+          message: '2'
+        })
+      }
     },
     {
       title: '转文字',
-      icon:
-      $r("app.media.ic_public_trans_text")
+      icon: $r("app.media.ic_public_trans_text")
     },
     {
       title: '删除',
@@ -29,12 +37,16 @@ struct Message {
     },
     {
       title: '多选',
-      icon:
-      $r("app.media.ic_public_multi_select")
+      icon: $r("app.media.ic_public_multi_select")
     },
     {
       title: '引用',
-      icon: $r("app.media.ic_public_link")
+      icon: $r("app.media.ic_public_link"),
+      itemClick: () => {
+        AlertDialog.show({
+          message: '7'
+        })
+      }
     },
     {
       title: '提醒',
@@ -58,7 +70,7 @@ struct Message {
           .height(60)
         }
         .onClick(() => {
-          item?.itemClick
+          item.itemClick && item.itemClick()
         })
       })
     }
