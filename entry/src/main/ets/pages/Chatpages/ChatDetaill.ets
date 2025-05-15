@@ -5,6 +5,7 @@ import { CurrentUser, UserList } from '../../Model/users'
 import { StoreClass } from '../../utils/StoreClass'
 import { BottomInput } from './BottomInput'
 import Message from './Message'
+import { emitter } from '@kit.BasicServicesKit'
 
 
 @Entry
@@ -61,6 +62,12 @@ struct ChatDetaill {
     this.MessageList = StoreClass.getChatMessage(this.talker.user_id)
   }
 
+  delMessage(id: string) {
+    const index = this.MessageList.findIndex((item: messageInfoModel) => item.id === id)
+    this.MessageList.slice(index, 1)
+    emitter.emit(StoreClass.Wechat_key)
+  }
+
   build() {
     Column() {
       //顶部布局
@@ -87,7 +94,10 @@ struct ChatDetaill {
         ForEach(this.MessageList, (item: messageInfoModel) => {
           ListItem() {
             Message({
-              CurrentMessage: item
+              CurrentMessage: item,
+              delMessage: (id: string) => {
+                this.delMessage(id)
+              }
             })
           }
         })

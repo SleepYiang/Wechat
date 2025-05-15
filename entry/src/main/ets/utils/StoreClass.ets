@@ -45,11 +45,11 @@ export class StoreClass {
   }
 
   //删除某个人的数据
-  static async RemoveChatMessage(userId: string) {
+  static async RemoveChatMessage(userId: string, messageId: string) {
     //获取操作的仓库
     const store = StoreClass.getUserStore(userId)
     //删除仓库指定数据
-    store.deleteSync(userId)
+    store.deleteSync(messageId)
     //写入磁盘
     await store.flushSync()
   }

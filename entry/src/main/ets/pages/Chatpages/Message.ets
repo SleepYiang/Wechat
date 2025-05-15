@@ -1,6 +1,7 @@
 import { messageInfo, messageInfoModel } from '../../Model/massege'
 import { PopupItem } from '../../Model/popup'
 import { CurrentUser } from '../../Model/users'
+import { StoreClass } from '../../utils/StoreClass'
 
 @Component
 struct Message {
@@ -33,7 +34,13 @@ struct Message {
     },
     {
       title: '删除',
-      icon: $r("app.media.ic_public_cancel")
+      icon: $r("app.media.ic_public_cancel"),
+      itemClick: () => {
+        //删除首选项的数据
+        StoreClass.RemoveChatMessage(this.CurrentMessage.ConnectUser.user_id, this.CurrentMessage.id)
+        //删除UI界面的数据
+        this.delMessage(this.CurrentMessage.id)
+      }
     },
     {
       title: '多选',
@@ -52,6 +59,8 @@ struct Message {
       title: '提醒',
       icon: $r("app.media.ic_public_warin")
     }]
+  delMessage: (messageId: string) => void = () => {
+  }
 
   @Builder
   getContent() {
