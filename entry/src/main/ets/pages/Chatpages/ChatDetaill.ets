@@ -55,7 +55,10 @@ struct ChatDetaill {
   //起始获取Params的数据
   aboutToAppear():
     void {
+    //接收其他页面发送的参数
     this.talker = router.getParams() as UserList
+    //获取首选项的数据
+    this.MessageList = StoreClass.getChatMessage(this.talker.user_id)
   }
 
   build() {
