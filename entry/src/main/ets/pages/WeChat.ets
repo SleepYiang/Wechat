@@ -16,6 +16,19 @@ struct WeChat {
     })
   }
 
+  @Builder
+  itemEnd() {
+    Row() {
+      Text('删除')
+        .fontColor($r('app.color.white'))
+        .textAlign(TextAlign.Center)
+        .width(80)
+    }
+    .backgroundColor($r('app.color.danger'))
+    .height(70)
+    .padding({ right: 10, left: 10 })
+  }
+
   //格式化时间
   //不是今年
   //今年：11-11
@@ -100,6 +113,13 @@ struct WeChat {
               })
             })
           }
+          .swipeAction({
+            end: {
+              builder: () => {
+                this.itemEnd()
+              }
+            }
+          })
           .padding({ top: 10, bottom: 10 })
           .stateStyles({
             pressed: {
