@@ -17,13 +17,20 @@ struct WeChat {
   }
 
   @Builder
-  itemEnd() {
+  itemEnd(user_id: string) {
     Row() {
       Text('删除')
         .fontColor($r('app.color.white'))
         .textAlign(TextAlign.Center)
         .width(80)
     }
+    .onClick(() => {
+      //删除首选项的数据
+      StoreClass.RemoveChatAllMessage(user_id)
+      //删除UI界面的数据
+      const index = this.List.findIndex((item: messageInfoModel) => item.ConnectUser.user_id)
+      this.List.splice(index, 1)
+    })
     .backgroundColor($r('app.color.danger'))
     .height(70)
     .padding({ right: 10, left: 10 })
@@ -106,6 +113,14 @@ struct WeChat {
               .justifyContent(FlexAlign.SpaceBetween)
               .padding({ top: 3, bottom: 3 })
             }
+            .stateStyles({
+              pressed: {
+                .backgroundColor($r('app.color.back_color'))
+              },
+              normal: {
+                .backgroundColor($r('app.color.white'))
+              }
+            })
             .onClick(() => {
               router.pushUrl({
                 url: 'pages/Chatpages/ChatDetaill',
@@ -116,19 +131,11 @@ struct WeChat {
           .swipeAction({
             end: {
               builder: () => {
-                this.itemEnd()
+                this.itemEnd(item.ConnectUser.user_id)
               }
             }
           })
           .padding({ top: 10, bottom: 10 })
-          .stateStyles({
-            pressed: {
-              .backgroundColor($r('app.color.back_color'))
-            },
-            normal: {
-              .backgroundColor($r('app.color.white'))
-            }
-          })
         })
       }
       .divider({
