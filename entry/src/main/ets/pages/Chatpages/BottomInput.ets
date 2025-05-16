@@ -6,7 +6,22 @@ export struct BottomInput {
   @State content: string = ''
   @State
   ShowVice: boolean = false
+  @State showVoiceCom: boolean = false
   sendTextMessage: (content: string) => void = () => {
+  }
+
+  @Builder
+  getVoiceCom() {
+    Column() {
+      Row() {
+      }
+      .width(100)
+      .height(100)
+      .backgroundColor("red")
+    }
+    .width("100%")
+    .height("100%")
+    .backgroundColor($r('app.color.voice_back_color'))
   }
 
   build() {
@@ -25,9 +40,22 @@ export struct BottomInput {
             .type(ButtonType.Normal)
             .backgroundColor(Color.White)
             .layoutWeight(1)
-            .fontColor($r('app.color.text_primary'))
             .borderRadius(2)
             .height(35)
+            .fontColor($r('app.color.text_primary'))
+            .gesture(LongPressGesture()
+              .onAction(() => {
+                //手势开始触发
+                this.showVoiceCom = true
+              })
+              .onActionEnd(() => {
+                //手势结束触发
+                this.showVoiceCom = false
+              })
+            )
+            .bindContentCover(this.showVoiceCom, this.getVoiceCom, {
+              modalTransition: ModalTransition.NONE
+            })
         } else {
           TextInput({ text: $$this.content })
             .layoutWeight(1)
