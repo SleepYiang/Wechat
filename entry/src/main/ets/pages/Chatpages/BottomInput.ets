@@ -76,10 +76,10 @@ export struct BottomInput {
                     } else {
                       if (event.fingerList[0].globalX > this.screenWidth / 2) {
                         //右侧
-                        this.voiceState = VoiceRecordEnum.Cancel
+                        this.voiceState = VoiceRecordEnum.Transfer
                       } else {
                         //左侧
-                        this.voiceState = VoiceRecordEnum.Transfer
+                        this.voiceState = VoiceRecordEnum.Cancel
                       }
                     }
                   })
