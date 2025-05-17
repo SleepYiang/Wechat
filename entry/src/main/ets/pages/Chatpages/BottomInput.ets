@@ -1,4 +1,5 @@
 import { display, promptAction } from '@kit.ArkUI'
+import { VoiceRecordEnum } from '../../Model/Voice'
 import VoiceInput from './VoiceInput'
 
 @Component
@@ -11,6 +12,8 @@ export struct BottomInput {
   //获取屏幕高度，屏幕宽度
   @State screenWidth: number = 0 //屏幕宽度
   @State screenHeight: number = 0 //获取屏幕高度
+  //保存状态
+  voiceState: VoiceRecordEnum = VoiceRecordEnum.Recording
 
   //页面加载获取屏幕宽度高度
   aboutToAppear(): void {
@@ -69,9 +72,19 @@ export struct BottomInput {
                   .onActionUpdate((event) => {
                     if (event.fingerList[0].globalY > this.screenHeight - 120) {
                       //手势触碰到录音区域
+                      this.voiceState = VoiceRecordEnum.Recording
                     } else {
-
+                      if (event.fingerList[0].globalX > this.screenWidth / 2) {
+                        //右侧
+                        this.voiceState = VoiceRecordEnum.Cancel
+                      } else {
+                        //左侧
+                        this.voiceState = VoiceRecordEnum.Transfer
+                      }
                     }
+                  })
+                  .onActionEnd(() => {
+                    this.voiceState = VoiceRecordEnum.Recording
                   })
               )
             )
