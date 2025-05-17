@@ -1,4 +1,5 @@
-import { promptAction } from '@kit.ArkUI'
+import { display, promptAction } from '@kit.ArkUI'
+import VoiceInput from './VoiceInput'
 
 @Component
 export struct BottomInput {
@@ -7,68 +8,27 @@ export struct BottomInput {
   @State
   ShowVice: boolean = false
   @State showVoiceCom: boolean = false
+  //获取屏幕高度，屏幕宽度
+  @State screenWidth: number = 0 //屏幕宽度
+  @State screenHeight: number = 0 //获取屏幕高度
+
+  //页面加载获取屏幕宽度高度
+  aboutToAppear(): void {
+    this.screenWidth = px2vp(display.getDefaultDisplaySync().width) //获取屏幕宽度
+    this.screenHeight = px2vp(display.getDefaultDisplaySync().height) //获取屏幕高度
+  }
+
   sendTextMessage: (content: string) => void = () => {
   }
 
+  //获取当前手指触摸的位置坐标x,y
+  //手势拖动时的判断当前的位置坐标x,y 是否大于屏幕高度-录音高度
+
   @Builder
   getVoiceCom() {
-    Stack({ alignContent: Alignment.Bottom }) {
-      Column() {
-        Row() {
-          Row() {
-            Image($r('app.media.ic_public_cancel'))
-              .width(30)
-              .aspectRatio(1)
-              .fillColor($r('app.color.voice_round_font_color'))
-          }
-          .width(70)
-          .aspectRatio(1)
-          .borderRadius(35)
-          .justifyContent(FlexAlign.Center)
-          .backgroundColor($r('app.color.voice_round_color'))
-          .rotate({
-            angle: -10
-          })
-
-
-          Row() {
-            Text("文")
-              .fontSize(24)
-              .fontColor($r('app.color.voice_round_font_color'))
-              .textAlign(TextAlign.Center)
-          }
-          .width(70)
-          .aspectRatio(1)
-          .borderRadius(35)
-          .justifyContent(FlexAlign.Center)
-          .backgroundColor($r('app.color.voice_round_color'))
-          .rotate({
-            angle: 10
-          })
-        }
-        .padding({ left: 40, right: 40 })
-        .width("100%")
-        .justifyContent(FlexAlign.SpaceBetween)
-        .margin({ bottom: 15 })
-
-        Stack() {
-          Image($r('app.media.ic_public_output'))
-            .width("100%")
-            .height(120)
-            .fillColor($r("app.color.bottom_color"))
-            .scale({
-              x: 1.2
-            })
-          Image($r('app.media.ic_public_recorder'))
-            .width(30)
-            .height(30)
-            .fillColor($r('app.color.bottom_voice_color'))
-        }
-      }
+    Column() {
+      VoiceInput()
     }
-    .width("100%")
-    .height("100%")
-    .backgroundColor($r('app.color.voice_back_color'))
   }
 
   build() {
@@ -89,16 +49,31 @@ export struct BottomInput {
             .layoutWeight(1)
             .borderRadius(2)
             .height(35)
-            .fontColor($r('app.color.text_primary'))
-            .gesture(LongPressGesture()
-              .onAction(() => {
-                //手势开始触发
-                this.showVoiceCom = true
-              })
-              .onActionEnd(() => {
-                //手势结束触发
-                this.showVoiceCom = false
-              })
+            .fontColor($r('app.color.text_primary'))//绑定手势
+            .gesture(
+              //设置手势类型——组合手势
+              //设置组合手势执行顺序_并发执行
+              GestureGroup(GestureMode.Parallel,
+                //长按手势
+                LongPressGesture()
+                  .onAction(() => {
+                    //手势开始触发
+                    this.showVoiceCom = true
+                  })
+                  .onActionEnd(() => {
+                    //手势结束触发
+                    this.showVoiceCom = false
+                  }),
+                //移动手势
+                PanGesture()
+                  .onActionUpdate((event) => {
+                    if (event.fingerList[0].globalY > this.screenHeight - 120) {
+                      //手势触碰到录音区域
+                    } else {
+
+                    }
+                  })
+              )
             )
             .bindContentCover(this.showVoiceCom, this.getVoiceCom, {
               modalTransition: ModalTransition.NONE
