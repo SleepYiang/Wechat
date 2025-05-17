@@ -1,10 +1,16 @@
+import { VoiceRecordEnum } from '../../Model/Voice'
+
 @Component
 struct VoiceInput {
+  @Consume
+  voiceState: VoiceRecordEnum
+
   build() {
     Stack({ alignContent: Alignment.Bottom }) {
       Column() {
         Row() {
           Row() {
+            //当进去录音区颜色改为绿色，
             Image($r('app.media.ic_public_cancel'))
               .width(30)
               .aspectRatio(1)
@@ -14,7 +20,8 @@ struct VoiceInput {
           .aspectRatio(1)
           .borderRadius(35)
           .justifyContent(FlexAlign.Center)
-          .backgroundColor($r('app.color.voice_round_color'))
+          .backgroundColor(this.voiceState === VoiceRecordEnum.Cancel ? $r('app.color.voice_round_color') :
+          $r('app.color.bottom_color'))
           .rotate({
             angle: -10
           })
@@ -30,7 +37,8 @@ struct VoiceInput {
           .aspectRatio(1)
           .borderRadius(35)
           .justifyContent(FlexAlign.Center)
-          .backgroundColor($r('app.color.voice_round_color'))
+          .backgroundColor(this.voiceState === VoiceRecordEnum.Transfer ? $r('app.color.voice_round_color') :
+          $r('app.color.bottom_color'))
           .rotate({
             angle: 10
           })
@@ -44,7 +52,8 @@ struct VoiceInput {
           Image($r('app.media.ic_public_output'))
             .width("100%")
             .height(120)
-            .fillColor($r("app.color.bottom_color"))
+            .fillColor(this.voiceState === VoiceRecordEnum.Recording ? $r('app.color.bottom_color') :
+            $r("app.color.bottom_voice_color"))
             .scale({
               x: 1.2
             })

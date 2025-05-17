@@ -13,6 +13,7 @@ export struct BottomInput {
   @State screenWidth: number = 0 //屏幕宽度
   @State screenHeight: number = 0 //获取屏幕高度
   //保存状态
+  @Provide
   voiceState: VoiceRecordEnum = VoiceRecordEnum.Recording
 
   //页面加载获取屏幕宽度高度
