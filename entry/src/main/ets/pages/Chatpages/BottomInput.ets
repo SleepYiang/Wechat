@@ -127,3 +127,5 @@ export struct BottomInput {
     .backgroundColor($r('app.color.second_back_color'))
   }
 }
+
+//真机检测需要下载软件
