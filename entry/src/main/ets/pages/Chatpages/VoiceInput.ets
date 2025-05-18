@@ -5,9 +5,46 @@ struct VoiceInput {
   @Consume
   voiceState: VoiceRecordEnum
 
+  @Builder
+  getDisplayContent() {
+    if (this.voiceState === VoiceRecordEnum.Cancel) {
+      Row() {
+      }
+      .width(100)
+      .height(80)
+      .backgroundColor($r('app.color.danger'))
+      .borderRadius(20)
+      .margin({ left: 30 })
+    }
+    if (this.voiceState === VoiceRecordEnum.Recording) {
+      Row() {
+      }
+      .width(100)
+      .height(80)
+      .backgroundColor($r('app.color.chat_primary'))
+      .borderRadius(20)
+    }
+    if (this.voiceState === VoiceRecordEnum.Transfer) {
+      Row() {
+      }
+      .width(280)
+      .height(180)
+      .backgroundColor($r('app.color.chat_primary'))
+      .borderRadius(20)
+    }
+  }
+
   build() {
     Stack({ alignContent: Alignment.Bottom }) {
       Column() {
+        Column() {
+          this.getDisplayContent()
+        }
+        .justifyContent(FlexAlign.Center)
+        .layoutWeight(1)
+        .width("100%")
+        .alignItems(this.voiceState === VoiceRecordEnum.Cancel ? HorizontalAlign.Start : HorizontalAlign.Center)
+
         Row() {
           Row() {
             //当进去录音区颜色改为绿色，
@@ -63,6 +100,8 @@ struct VoiceInput {
             .fillColor($r('app.color.bottom_voice_color'))
         }
       }
+      .width("100%")
+      .height("100%")
     }
     .width("100%")
     .height("100%")
