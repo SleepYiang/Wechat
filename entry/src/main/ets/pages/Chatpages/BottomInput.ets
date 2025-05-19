@@ -1,4 +1,5 @@
 import { display, promptAction } from '@kit.ArkUI'
+import { PopupItem } from '../../Model/popup'
 import { VoiceRecordEnum } from '../../Model/Voice'
 import VoiceInput from './VoiceInput'
 
@@ -15,6 +16,44 @@ export struct BottomInput {
   //保存状态
   @Provide
   voiceState: VoiceRecordEnum = VoiceRecordEnum.Recording
+  //定义底部菜单数据
+  @State
+  bottomList: PopupItem[] = [
+    {
+      icon: $r('app.media.ic_public_photo'),
+      title: "照片"
+    },
+    {
+      icon: $r('app.media.ic_public_switch_camera'),
+      title: "拍摄"
+    },
+    {
+      icon: $r('app.media.ic_statusbar_gps'),
+      title: "位置"
+    },
+    {
+      icon: $r('app.media.ic_public_voice'),
+      title: "语音输入"
+    },
+    {
+      icon: $r('app.media.ic_public_collect'),
+      title: "收藏"
+    },
+    {
+      icon: $r('app.media.ic_public_folder_filled'),
+      title: "个人名片"
+    },
+    {
+      icon: $r('app.media.ic_public_contacts_filled'),
+      title: "文件"
+    },
+    {
+      icon: $r('app.media.ic_public_music_filled'),
+      title: "音乐"
+    },
+
+
+  ]
 
   //页面加载获取屏幕宽度高度
   aboutToAppear(): void {
@@ -22,11 +61,34 @@ export struct BottomInput {
     this.screenHeight = px2vp(display.getDefaultDisplaySync().height) //获取屏幕高度
   }
 
+  //获取当前手指触摸的位置坐标x,y
+  //手势拖动时的判断当前的位置坐标x,y 是否大于屏幕高度-录音高度
+
   sendTextMessage: (content: string) => void = () => {
   }
 
-  //获取当前手指触摸的位置坐标x,y
-  //手势拖动时的判断当前的位置坐标x,y 是否大于屏幕高度-录音高度
+  @Builder
+  GetBottomCard(item: PopupItem) {
+    Column() {
+      Column() {
+        Image(item.icon)
+          .width(30)
+          .height(30)
+          .fillColor("#4c4c4c")
+      }
+      .width(56)
+      .aspectRatio(1)
+      .backgroundColor($r('app.color.white'))
+      .borderRadius(10)
+      .justifyContent(FlexAlign.Center)
+
+      Text(item.title)
+        .fontSize(12)
+        .margin({ top: 12 })
+        .fontColor($r('app.color.text_second'))
+    }
+    .layoutWeight(1)
+  }
 
   @Builder
   getVoiceCom() {
@@ -123,11 +185,18 @@ export struct BottomInput {
       .width('100%')
       .height(60)
       .padding({ right: 10, left: 10 })
+
+      GridRow({ columns: 4 }) {
+        ForEach(this.bottomList, (item: PopupItem) => {
+          GridCol() {
+            this.GetBottomCard(item)
+          }
+          .height(100)
+        })
+      }
+      .width("100%")
     }
     .backgroundColor($r('app.color.second_back_color'))
   }
 }
 
-//真机检测需要下载软件
-
-//水一条
