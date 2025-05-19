@@ -2,6 +2,7 @@ import { display, promptAction } from '@kit.ArkUI'
 import { PopupItem } from '../../Model/popup'
 import { VoiceRecordEnum } from '../../Model/Voice'
 import VoiceInput from './VoiceInput'
+import { photoAccessHelper } from '@kit.MediaLibraryKit'
 
 @Component
 export struct BottomInput {
@@ -21,7 +22,10 @@ export struct BottomInput {
   bottomList: PopupItem[] = [
     {
       icon: $r('app.media.ic_public_photo'),
-      title: "照片"
+      title: "照片",
+      itemClick: () => {
+        this.sendPhotoMessage()
+      }
     },
     {
       icon: $r('app.media.ic_public_switch_camera'),
@@ -57,14 +61,24 @@ export struct BottomInput {
   //控制底部状态栏的显示隐藏
   @State showBottomCard: boolean = false
 
+  async sendPhotoMessage() {
+    const photoviewPicker = new photoAccessHelper.PhotoViewPicker()
+    const result = await photoviewPicker.select({
+      //选择类型
+      MIMEType: photoAccessHelper.PhotoViewMIMETypes.IMAGE_VIDEO_TYPE,
+      //设置选择图片和视频的数量
+      maxSelectNumber: 9
+    })
+  }
+
+  //获取当前手指触摸的位置坐标x,y
+  //手势拖动时的判断当前的位置坐标x,y 是否大于屏幕高度-录音高度
+
   //页面加载获取屏幕宽度高度
   aboutToAppear(): void {
     this.screenWidth = px2vp(display.getDefaultDisplaySync().width) //获取屏幕宽度
     this.screenHeight = px2vp(display.getDefaultDisplaySync().height) //获取屏幕高度
   }
-
-  //获取当前手指触摸的位置坐标x,y
-  //手势拖动时的判断当前的位置坐标x,y 是否大于屏幕高度-录音高度
 
   sendTextMessage: (content: string) => void = () => {
   }
@@ -203,6 +217,9 @@ export struct BottomInput {
               this.GetBottomCard(item)
             }
             .height(100)
+            .onClick(() => {
+              item.itemClick && item.itemClick()
+            })
           })
         }
         .width("100%")
