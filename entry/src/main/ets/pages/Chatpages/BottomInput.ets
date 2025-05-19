@@ -54,6 +54,8 @@ export struct BottomInput {
 
 
   ]
+  //控制底部状态栏的显示隐藏
+  @State showBottomCard: boolean = false
 
   //页面加载获取屏幕宽度高度
   aboutToAppear(): void {
@@ -104,6 +106,8 @@ export struct BottomInput {
         Image(this.ShowVice ? $r('app.media.ic_public_keyboard') : $r('app.media.ic_public_sound'))
           .onClick(() => {
             this.ShowVice = !this.ShowVice
+            this.showBottomCard = false
+
           })
           .width(25)
           .height(25)
@@ -174,27 +178,35 @@ export struct BottomInput {
                 })
               }
             })
+            .onClick(() => {
+              this.showBottomCard = false
+            })
         }
-
-
         //右侧图标
         Image($r('app.media.ic_public_add_norm'))
           .width(25)
           .height(25)
+          .onClick(() => {
+            animateTo({ duration: 250 }, () => {
+              this.showBottomCard = !this.showBottomCard
+            })
+          })
       }
       .width('100%')
       .height(60)
       .padding({ right: 10, left: 10 })
 
-      GridRow({ columns: 4 }) {
-        ForEach(this.bottomList, (item: PopupItem) => {
-          GridCol() {
-            this.GetBottomCard(item)
-          }
-          .height(100)
-        })
+      if (this.showBottomCard) {
+        GridRow({ columns: 4 }) {
+          ForEach(this.bottomList, (item: PopupItem) => {
+            GridCol() {
+              this.GetBottomCard(item)
+            }
+            .height(100)
+          })
+        }
+        .width("100%")
       }
-      .width("100%")
     }
     .backgroundColor($r('app.color.second_back_color'))
   }
