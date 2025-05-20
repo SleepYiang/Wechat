@@ -74,9 +74,12 @@ export struct BottomInput {
       result.photoUris.forEach((item) => {
         //调用打开文件方法，如果图片在本地不存在，则进行创建
         const file = fileIo.openSync(item, fileIo.OpenMode.READ_ONLY)
+        //创建文件沙箱的保存路径
         const newFileName = getContext().filesDir + "/" + Date.now() + ".jpg"
         fileIo.copyFileSync(file.fd, newFileName)
         fileIo.closeSync(file.fd)
+
+        this.sendImageMessage(newFileName)
       })
     }
   }
@@ -91,6 +94,8 @@ export struct BottomInput {
   }
 
   sendTextMessage: (content: string) => void = () => {
+  }
+  sendImageMessage: (filePath: string) => void = () => {
   }
 
   @Builder

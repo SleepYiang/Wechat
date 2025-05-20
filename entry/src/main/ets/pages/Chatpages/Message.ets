@@ -1,4 +1,4 @@
-import { messageInfo, messageInfoModel } from '../../Model/massege'
+import { messageInfo, messageInfoModel, MessageTypeEnum } from '../../Model/massege'
 import { PopupItem } from '../../Model/popup'
 import { CurrentUser } from '../../Model/users'
 import { StoreClass } from '../../utils/StoreClass'
@@ -98,25 +98,32 @@ struct Message {
 
       Row() {
         Column() {
-          Text(this.CurrentMessage.MessageContent)
-            .backgroundColor(CurrentUser.user_id === this.CurrentMessage.SendUser.user_id ?
-            $r('app.color.second_primary') :
-            $r('app.color.white'))
-            .fontColor($r('app.color.text_primary'))
-            .padding(10)
-            .margin({ left: 10, right: 10 })
-            .borderRadius(5)
-            .bindPopup(this.showPopup, {
-              builder: this.getContent,
-              popupColor: $r('app.color.popup_back'),
-              backgroundBlurStyle: BlurStyle.NONE,
-              onStateChange: (Event) => {
-                this.showPopup = Event.isVisible
-              }
-            })
-            .gesture(LongPressGesture().onAction(() => {
-              this.showPopup = true
-            }))
+          if (this.CurrentMessage.MessageType === MessageTypeEnum.Image) {
+            Image("file://" + this.CurrentMessage.SourceFilePath)
+              .width('100%')
+              .borderRadius(3)
+          } else if (this.CurrentMessage.MessageType === MessageTypeEnum.Text) {
+            Text(this.CurrentMessage.MessageContent)
+              .backgroundColor(CurrentUser.user_id === this.CurrentMessage.SendUser.user_id ?
+              $r('app.color.second_primary') :
+              $r('app.color.white'))
+              .fontColor($r('app.color.text_primary'))
+              .padding(10)
+              .margin({ left: 10, right: 10 })
+              .borderRadius(5)
+              .bindPopup(this.showPopup, {
+                builder: this.getContent,
+                popupColor: $r('app.color.popup_back'),
+                backgroundBlurStyle: BlurStyle.NONE,
+                onStateChange: (Event) => {
+                  this.showPopup = Event.isVisible
+                }
+              })
+              .gesture(LongPressGesture().onAction(() => {
+                this.showPopup = true
+              }))
+          }
+
         }
       }
       .layoutWeight(6)

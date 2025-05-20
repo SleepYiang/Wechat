@@ -1,6 +1,6 @@
 import router from '@ohos.router'
 import { getMessageInfo } from '../../API'
-import { messageInfo, messageInfoModel } from '../../Model/massege'
+import { messageInfo, messageInfoModel, MessageTypeEnum } from '../../Model/massege'
 import { CurrentUser, UserList } from '../../Model/users'
 import { StoreClass } from '../../utils/StoreClass'
 import { BottomInput } from './BottomInput'
@@ -31,6 +31,21 @@ struct ChatDetaill {
     this.getResponseMessage(content)
     //创建仓库
     StoreClass.addChatMessage(this.talker.user_id, message)
+  }
+
+  //发送图片信息
+  sendImageMessage(filePath: string) {
+    let message = new messageInfoModel({
+      MessageContent: '[图片]',
+      SendUser: CurrentUser,
+      ConnectUser: this.talker,
+      MessageType: MessageTypeEnum.Image,
+      SourceFilePath: filePath,
+    } as messageInfo)
+    this.MessageList.push(message)
+    //创建仓库
+    StoreClass.addChatMessage(this.talker.user_id, message)
+    this.scroller.scrollEdge(Edge.Bottom)
   }
 
   // 机器人回复
@@ -110,8 +125,11 @@ struct ChatDetaill {
 
       //底部布局
       BottomInput({
-        sendTextMessage: (content) => {
+        sendTextMessage: (content: string) => {
           this.sendTextMessage(content)
+        },
+        sendImageMessage:(filePath:string)=>{
+          this.sendImageMessage(filePath)
         }
       })
 
