@@ -99,9 +99,14 @@ struct Message {
       Row() {
         Column() {
           if (this.CurrentMessage.MessageType === MessageTypeEnum.Image) {
-            Image("file://" + this.CurrentMessage.SourceFilePath)
-              .width('100%')
-              .borderRadius(3)
+            Column() {
+              Image("file://" + this.CurrentMessage.SourceFilePath)
+                .width('100%')
+                .borderRadius(3)
+            }
+            .width("40%")
+            .margin({ right: 10 })
+
           } else if (this.CurrentMessage.MessageType === MessageTypeEnum.Text) {
             Text(this.CurrentMessage.MessageContent)
               .backgroundColor(CurrentUser.user_id === this.CurrentMessage.SendUser.user_id ?
