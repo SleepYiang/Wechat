@@ -3,6 +3,7 @@ import { PopupItem } from '../../Model/popup'
 import { VoiceRecordEnum } from '../../Model/Voice'
 import VoiceInput from './VoiceInput'
 import { photoAccessHelper } from '@kit.MediaLibraryKit'
+import { fileIo } from '@kit.CoreFileKit'
 
 @Component
 export struct BottomInput {
@@ -69,6 +70,15 @@ export struct BottomInput {
       //设置选择图片和视频的数量
       maxSelectNumber: 9
     })
+    if (result.photoUris.length) {
+      result.photoUris.forEach((item) => {
+        //调用打开文件方法，如果图片在本地不存在，则进行创建
+        const file = fileIo.openSync(item, fileIo.OpenMode.READ_ONLY)
+        const newFileName = getContext().filesDir + "/" + Date.now() + ".jpg"
+        fileIo.copyFileSync(file.fd, newFileName)
+        fileIo.closeSync(file.fd)
+      })
+    }
   }
 
   //获取当前手指触摸的位置坐标x,y
