@@ -13,6 +13,8 @@ import { emitter } from '@kit.BasicServicesKit'
 struct ChatDetaill {
   @State
   talker: UserList = {} as UserList
+  @State
+  preview: string = ""
   //创建聊天列表
   @State MessageList: messageInfoModel[] = []
   //滚动控键盘
@@ -42,7 +44,9 @@ struct ChatDetaill {
   @Builder
   CustomImageDialog() {
     Column() {
-
+      Image("file://" + this.preview)
+        .width("100%")
+        .height("100%")
     }
     .width('100%')
     .height("100%")
@@ -53,8 +57,9 @@ struct ChatDetaill {
   }
 
   //打开弹窗的方法
-  openCustomImageDialog() {
+  openCustomImageDialog(filePath: string) {
     this.dialogController.open()
+    this.preview = filePath
   }
 
   //发送图片信息
@@ -137,8 +142,8 @@ struct ChatDetaill {
               delMessage: (id: string) => {
                 this.delMessage(id)
               },
-              openCustomImageDialog: () => {
-                this.openCustomImageDialog()
+              openCustomImageDialog: (filePath: string) => {
+                this.openCustomImageDialog(filePath)
               }
             })
           }

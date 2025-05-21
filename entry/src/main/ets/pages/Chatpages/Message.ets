@@ -61,7 +61,7 @@ struct Message {
     }]
   delMessage: (messageId: string) => void = () => {
   }
-  openCustomImageDialog: () => void = () => {
+  openCustomImageDialog: (filePath:string) => void = () => {
 
   }
 
@@ -110,7 +110,7 @@ struct Message {
             .width("40%")
             .margin({ right: 10 })
             .onClick(() => {
-              this.openCustomImageDialog()
+              this.openCustomImageDialog(this.CurrentMessage.SourceFilePath)
             })
 
           } else if (this.CurrentMessage.MessageType === MessageTypeEnum.Text) {
