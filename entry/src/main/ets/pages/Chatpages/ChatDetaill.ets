@@ -23,7 +23,7 @@ struct ChatDetaill {
   @State talkerInputIng: boolean = false
   //弹窗方法
   dialogController: CustomDialogController = new CustomDialogController({
-    builder: this.CustomImageDialog(),
+    builder: this.CustomImageDialog,
     customStyle: true,
     autoCancel: false
   })
@@ -50,7 +50,6 @@ struct ChatDetaill {
     }
     .width('100%')
     .height("100%")
-    .backgroundColor(Color.Green)
     .onClick(() => {
       this.dialogController.close()
     })
