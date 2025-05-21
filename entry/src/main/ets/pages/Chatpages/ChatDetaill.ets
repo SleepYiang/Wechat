@@ -19,6 +19,12 @@ struct ChatDetaill {
   scroller: Scroller = new Scroller()
   //是否是输入状态
   @State talkerInputIng: boolean = false
+  //弹窗方法
+  dialogController: CustomDialogController = new CustomDialogController({
+    builder: this.CustomImageDialog(),
+    customStyle: true,
+    autoCancel: false
+  })
 
   //发送数据
   sendTextMessage(content: string) {
@@ -31,6 +37,24 @@ struct ChatDetaill {
     this.getResponseMessage(content)
     //创建仓库
     StoreClass.addChatMessage(this.talker.user_id, message)
+  }
+
+  @Builder
+  CustomImageDialog() {
+    Column() {
+
+    }
+    .width('100%')
+    .height("100%")
+    .backgroundColor(Color.Green)
+    .onClick(() => {
+      this.dialogController.close()
+    })
+  }
+
+  //打开弹窗的方法
+  openCustomImageDialog() {
+    this.dialogController.open()
   }
 
   //发送图片信息
@@ -112,6 +136,9 @@ struct ChatDetaill {
               CurrentMessage: item,
               delMessage: (id: string) => {
                 this.delMessage(id)
+              },
+              openCustomImageDialog: () => {
+                this.openCustomImageDialog()
               }
             })
           }
@@ -128,10 +155,11 @@ struct ChatDetaill {
         sendTextMessage: (content: string) => {
           this.sendTextMessage(content)
         },
-        sendImageMessage:(filePath:string)=>{
+        sendImageMessage: (filePath: string) => {
           this.sendImageMessage(filePath)
         }
       })
+
 
     }
     .width("100%")

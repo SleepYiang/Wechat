@@ -61,6 +61,9 @@ struct Message {
     }]
   delMessage: (messageId: string) => void = () => {
   }
+  openCustomImageDialog: () => void = () => {
+
+  }
 
   @Builder
   getContent() {
@@ -106,6 +109,9 @@ struct Message {
             }
             .width("40%")
             .margin({ right: 10 })
+            .onClick(() => {
+              this.openCustomImageDialog()
+            })
 
           } else if (this.CurrentMessage.MessageType === MessageTypeEnum.Text) {
             Text(this.CurrentMessage.MessageContent)
