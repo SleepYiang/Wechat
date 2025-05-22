@@ -15,6 +15,8 @@ struct ChatDetaill {
   talker: UserList = {} as UserList
   @State
   preview: string = ""
+  @State
+  preViewType: MessageTypeEnum = MessageTypeEnum.Text
   //创建聊天列表
   @State MessageList: messageInfoModel[] = []
   //滚动控键盘
@@ -44,9 +46,20 @@ struct ChatDetaill {
   @Builder
   CustomImageDialog() {
     Column() {
-      Image("file://" + this.preview)
-        .width("100%")
-        .height("100%")
+      if (this.preViewType === MessageTypeEnum.Voice) {
+        Video({
+          src: "file://" + this.preview
+        })
+          .autoPlay(true)
+          .loop(true)
+          .controls(false)
+          .width("100%")
+          .height("100%")
+      } else if (this.preViewType === MessageTypeEnum.Image) {
+        Image("file://" + this.preview)
+          .width("100%")
+          .height("100%")
+      }
     }
     .width('100%')
     .height("100%")
@@ -56,9 +69,13 @@ struct ChatDetaill {
   }
 
   //打开弹窗的方法
-  openCustomImageDialog(filePath: string) {
+  openCustomImageDialog(filePath: string, type?: MessageTypeEnum) {
     this.dialogController.open()
+    if (type) {
+      this.preViewType = type
+    }
     this.preview = filePath
+
   }
 
   //发送图片信息
@@ -68,6 +85,22 @@ struct ChatDetaill {
       SendUser: CurrentUser,
       ConnectUser: this.talker,
       MessageType: MessageTypeEnum.Image,
+      SourceFilePath: filePath,
+    } as messageInfo)
+    this.MessageList.push(message)
+    //创建仓库
+    StoreClass.addChatMessage(this.talker.user_id, message)
+    this.scroller.scrollEdge(Edge.Bottom)
+    this.getResponseMessage("file://" + filePath)
+  }
+
+  //发送视频的方法
+  sendVideoMessage(filePath: string) {
+    let message = new messageInfoModel({
+      MessageContent: '[视频]',
+      SendUser: CurrentUser,
+      ConnectUser: this.talker,
+      MessageType: MessageTypeEnum.Video,
       SourceFilePath: filePath,
     } as messageInfo)
     this.MessageList.push(message)
@@ -141,7 +174,7 @@ struct ChatDetaill {
               delMessage: (id: string) => {
                 this.delMessage(id)
               },
-              openCustomImageDialog: (filePath: string) => {
+              openCustomImageDialog: (filePath: string, type?: MessageTypeEnum) => {
                 this.openCustomImageDialog(filePath)
               }
             })
@@ -161,6 +194,9 @@ struct ChatDetaill {
         },
         sendImageMessage: (filePath: string) => {
           this.sendImageMessage(filePath)
+        },
+        sendVideoMessage: (filePath: string) => {
+          this.sendVideoMessage(filePath)
         }
       })
 

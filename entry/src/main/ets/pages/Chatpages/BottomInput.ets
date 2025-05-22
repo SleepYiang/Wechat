@@ -84,8 +84,15 @@ export struct BottomInput {
         fileIo.copyFileSync(file.fd, newFileName)
         fileIo.closeSync(file.fd)
         this.sendImageMessage(newFileName)
-      } //发送视频的功能实现
+      }
+      //发送视频的功能实现
       else {
+        //创建文件沙箱的保存路径
+        const file = fileIo.openSync(pickerResult.resultUri, fileIo.OpenMode.READ_ONLY)
+        const newFileName = getContext().filesDir + "/" + Date.now() + ".mp4"
+        fileIo.copyFileSync(file.fd, newFileName)
+        fileIo.closeSync(file.fd)
+        this.sendVideoMessage(newFileName)
 
       }
     } catch (error) {
@@ -128,6 +135,8 @@ export struct BottomInput {
   sendTextMessage: (content: string) => void = () => {
   }
   sendImageMessage: (filePath: string) => void = () => {
+  }
+  sendVideoMessage: (filePath: string) => void = () => {
   }
 
   @Builder

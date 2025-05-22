@@ -59,10 +59,10 @@ struct Message {
       title: '提醒',
       icon: $r("app.media.ic_public_warin")
     }]
+  videoController: VideoController = new VideoController
   delMessage: (messageId: string) => void = () => {
   }
-  openCustomImageDialog: (filePath:string) => void = () => {
-
+  openCustomImageDialog: (filePath: string, type?: MessageTypeEnum) => void = () => {
   }
 
   @Builder
@@ -110,8 +110,27 @@ struct Message {
             .width("40%")
             .margin({ right: 10 })
             .onClick(() => {
-              this.openCustomImageDialog(this.CurrentMessage.SourceFilePath)
+              this.openCustomImageDialog(this.CurrentMessage.SourceFilePath, this.CurrentMessage.MessageType)
             })
+          } else if (this.CurrentMessage.MessageType === MessageTypeEnum.Video) {
+            Stack() {
+              Video({
+                src: "file://" + this.CurrentMessage.SourceFilePath,
+                controller: this.videoController
+              })
+                .controls(false)
+                .width(100)
+                .height(150)
+                .borderRadius(3)
+
+              Image($r('app.media.ic_public_play'))
+                .width(30)
+                .alignSelf(1)
+                .fillColor($r('app.color.back_color'))
+                .onClick(() => {
+                  this.openCustomImageDialog(this.CurrentMessage.SourceFilePath, this.CurrentMessage.MessageType)
+                })
+            }
 
           } else if (this.CurrentMessage.MessageType === MessageTypeEnum.Text) {
             Text(this.CurrentMessage.MessageContent)
