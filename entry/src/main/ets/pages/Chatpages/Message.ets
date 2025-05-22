@@ -122,6 +122,9 @@ struct Message {
                 .width(100)
                 .height(150)
                 .borderRadius(3)
+                .onPrepared(async () => {
+                  this.videoController.setCurrentTime(0.1) //拨到0.1秒
+                })
 
               Image($r('app.media.ic_public_play'))
                 .width(30)
