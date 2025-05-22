@@ -4,6 +4,8 @@ import { VoiceRecordEnum } from '../../Model/Voice'
 import VoiceInput from './VoiceInput'
 import { photoAccessHelper } from '@kit.MediaLibraryKit'
 import { fileIo } from '@kit.CoreFileKit'
+import { camera, cameraPicker as picker } from '@kit.CameraKit'
+import { BusinessError } from '@kit.BasicServicesKit'
 
 @Component
 export struct BottomInput {
@@ -30,7 +32,11 @@ export struct BottomInput {
     },
     {
       icon: $r('app.media.ic_public_switch_camera'),
-      title: "拍摄"
+      title: "拍摄",
+      itemClick: () => {
+        //唤醒相机
+        this.openCamera()
+      }
     },
     {
       icon: $r('app.media.ic_statusbar_gps'),
@@ -62,6 +68,35 @@ export struct BottomInput {
   //控制底部状态栏的显示隐藏
   @State showBottomCard: boolean = false
 
+  //唤醒相机并发送照片
+  async openCamera() {
+    try {
+      let pickerProfile: picker.PickerProfile = {
+        cameraPosition: camera.CameraPosition.CAMERA_POSITION_BACK
+      };
+      let pickerResult: picker.PickerResult = await picker.pick(getContext(),
+        [picker.PickerMediaType.PHOTO, picker.PickerMediaType.VIDEO], pickerProfile);
+      if (pickerResult.mediaType === 'photo' && pickerResult.resultUri !== '') {
+        //照片存在沙箱
+        const file = fileIo.openSync(pickerResult.resultUri, fileIo.OpenMode.READ_ONLY)
+        //创建文件沙箱的保存路径
+        const newFileName = getContext().filesDir + "/" + Date.now() + ".jpg"
+        fileIo.copyFileSync(file.fd, newFileName)
+        fileIo.closeSync(file.fd)
+        this.sendImageMessage(newFileName)
+      } //发送视频的功能实现
+      else {
+
+      }
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error(`the pick call failed. error code: ${err.code}`);
+    }
+  }
+
+  //获取当前手指触摸的位置坐标x,y
+  //手势拖动时的判断当前的位置坐标x,y 是否大于屏幕高度-录音高度
+
   async sendPhotoMessage() {
     const photoviewPicker = new photoAccessHelper.PhotoViewPicker()
     const result = await photoviewPicker.select({
@@ -83,9 +118,6 @@ export struct BottomInput {
       })
     }
   }
-
-  //获取当前手指触摸的位置坐标x,y
-  //手势拖动时的判断当前的位置坐标x,y 是否大于屏幕高度-录音高度
 
   //页面加载获取屏幕宽度高度
   aboutToAppear(): void {
