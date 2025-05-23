@@ -79,6 +79,22 @@ struct WeChat {
 
   build() {
     Column() {
+      Row() {
+        Stack({ alignContent: Alignment.End }) {
+          Text("微信")
+            .fontSize(16)
+            .fontColor($r('app.color.text_primary'))
+            .textAlign(TextAlign.Center)
+            .width("100%")
+          Image($r('app.media.ic_public_add_norm'))
+            .width(20)
+            .alignSelf(1)
+            .fillColor($r('app.color.text_primary'))
+            .margin({ right: 10 })
+        }
+      }
+      .width("100%")
+
       List() {
         ForEach(this.List, (item: messageInfoModel) => {
           ListItem() {
