@@ -2,10 +2,34 @@ import { messageInfoModel } from '../Model/massege'
 import { StoreClass } from '../utils/StoreClass'
 import { emitter } from '@kit.BasicServicesKit'
 import { router } from '@kit.ArkUI'
+import { PopupItem } from '../Model/popup'
 
 @Component
 struct WeChat {
   @State List: messageInfoModel[] = []
+  @State
+  showDropDown: boolean = false
+  @State
+  popList: PopupItem[] = [
+    {
+      title: '发起群聊',
+      icon:
+      $r('app.media.ic_public_message')
+    },
+    {
+      title: '添加朋友',
+      icon: $r('app.media.ic_public_add_friend')
+    },
+    {
+      title: '扫一扫',
+      icon:
+      $r('app.media.ic_public_scan')
+    },
+    {
+      title: '收付款',
+      icon: $r('app.media.ic_public_receive')
+    }
+  ]
 
   aboutToAppear(): void {
     this.List = StoreClass.getAllChatLastMessage()
@@ -14,6 +38,29 @@ struct WeChat {
       //刷新消息列表
       this.List = StoreClass.getAllChatLastMessage()
     })
+  }
+
+  @Builder
+  getDropDown() {
+    Column() {
+      ForEach(this.popList, (item: PopupItem) => {
+        Row({ space: 5 }) {
+          Image(item.icon)
+            .width(20)
+            .height(20)
+            .fillColor($r("app.color.white"))
+          Text(item.title)
+            .layoutWeight(1)
+            .textAlign(TextAlign.Center)
+            .fontColor($r('app.color.white'))
+        }
+        .width("100%")
+        .padding({ left: 10, right: 10 })
+        .height(45)
+        .justifyContent(FlexAlign.Center)
+      })
+    }
+    .width(120)
   }
 
   @Builder
@@ -90,8 +137,20 @@ struct WeChat {
             .width(20)
             .alignSelf(1)
             .fillColor($r('app.color.text_primary'))
-            .margin({ right: 10 })
+            .margin({ right: 20 })
+            .onClick(() => {
+              this.showDropDown = true
+            })
+            .bindPopup($$this.showDropDown, {
+              builder: this.getDropDown,
+              onStateChange: (event) => {
+                this.showDropDown = event.isVisible
+              },
+              backgroundBlurStyle: BlurStyle.NONE,
+              popupColor: $r("app.color.popup_back")
+            })
         }
+
       }
       .width("100%")
 
