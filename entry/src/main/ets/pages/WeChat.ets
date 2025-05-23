@@ -3,6 +3,7 @@ import { StoreClass } from '../utils/StoreClass'
 import { emitter } from '@kit.BasicServicesKit'
 import { router } from '@kit.ArkUI'
 import { PopupItem } from '../Model/popup'
+import { scanBarcode, scanCore } from '@kit.ScanKit'
 
 @Component
 struct WeChat {
@@ -22,8 +23,21 @@ struct WeChat {
     },
     {
       title: '扫一扫',
-      icon:
-      $r('app.media.ic_public_scan')
+      icon: $r('app.media.ic_public_scan'),
+      itemClick: async () => {
+        //扫码参数
+        let options: scanBarcode.ScanOptions = {
+          scanTypes: [scanCore.ScanType.ALL],
+          enableMultiMode: true,
+          enableAlbum: true
+        }
+        //启动扫码程序
+        try {
+          const result = await scanBarcode.startScanForResult(getContext(this), options)
+        } catch (e) {
+          console.log(e)
+        }
+      }
     },
     {
       title: '收付款',
