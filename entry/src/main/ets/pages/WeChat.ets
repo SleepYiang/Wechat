@@ -242,6 +242,8 @@ struct WeChat {
     .height("100%")
     .backgroundColor('#fff')
   }
+
+  //AxureShop可以找到多种的扫码类项目
 }
 
 export default WeChat
