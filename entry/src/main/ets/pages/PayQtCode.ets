@@ -39,6 +39,12 @@ struct PayQtCode {
               left: 10,
               right: 10
             })
+            .border({
+              width: {
+                bottom: 1
+              },
+              color: $r("app.color.border_color")
+            })
         }
 
         Column() {
