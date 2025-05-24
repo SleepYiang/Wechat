@@ -41,7 +41,12 @@ struct WeChat {
     },
     {
       title: '收付款',
-      icon: $r('app.media.ic_public_receive')
+      icon: $r('app.media.ic_public_receive'),
+      itemClick: () => {
+        router.pushUrl({
+          url: "pages/PayQtCode"
+        })
+      }
     }
   ]
 
