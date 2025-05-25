@@ -65,3 +65,5 @@ struct PayQtCode {
     .backgroundColor($r('app.color.pay_back'))
   }
 }
+
+//水一条
