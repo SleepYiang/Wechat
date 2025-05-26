@@ -1,20 +1,44 @@
 import { router } from '@kit.ArkUI'
+import { generateBarcode, scanCore } from '@kit.ScanKit'
 
 @Entry
 @Component
 struct PayQrCode {
-  @State PayParams: string = '你是咋啥都扫'
-
   //声明一个变量保存条形码
+  @State
+  payParams: string = Math.random().toString()
+  timer: number = -1
+  @State
+  barCodeImage: PixelMap | null = null
+
+  aboutToAppear(): void {
+    this.createQrCodeValue()
+    this.createBarCode()
+  }
+
+  aboutToDisappear(): void {
+    clearTimeout(this.timer)
+  }
+
+  createQrCodeValue() {
+    this.timer = setInterval(async () => {
+      this.payParams = Math.random().toString()
+    }, 10000)
+  }
+
+  async createBarCode() {
+    // 创建二维码也可以
+    this.barCodeImage = await generateBarcode.createBarcode(this.payParams, {
+      scanType: scanCore.ScanType.CODE128_CODE,
+      height: 200, // 像素值
+      width: 800 // 像素值
+    })
+  }
 
   refreshQrCode() {
     setInterval(() => {
-      this.PayParams = '你是咋啥都扫'
+      this.payParams = Math.random().toString()
     }, 3000)
-  }
-
-  aboutToAppear(): void {
-    this.refreshQrCode()
   }
 
   build() {
@@ -71,9 +95,12 @@ struct PayQrCode {
               .fontColor(
                 $r("app.color.text_second"))
               .fontSize(12)
-            QRCode(this.PayParams)
+            QRCode(this.payParams)
               .width(140)
-              .alignSelf(1)
+              .height(140)
+            Image(this.barCodeImage)
+              .width(280)
+              .height(100)
           }
           .margin({
             top: 10,
