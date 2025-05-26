@@ -3,6 +3,20 @@ import { router } from '@kit.ArkUI'
 @Entry
 @Component
 struct PayQrCode {
+  @State PayParams: string = '你是咋啥都扫'
+
+  //声明一个变量保存条形码
+
+  refreshQrCode() {
+    setInterval(() => {
+      this.PayParams = '你是咋啥都扫'
+    }, 3000)
+  }
+
+  aboutToAppear(): void {
+    this.refreshQrCode()
+  }
+
   build() {
     Column() {
       Row() {
@@ -57,6 +71,9 @@ struct PayQrCode {
               .fontColor(
                 $r("app.color.text_second"))
               .fontSize(12)
+            QRCode(this.PayParams)
+              .width(140)
+              .alignSelf(1)
           }
           .margin({
             top: 10,
