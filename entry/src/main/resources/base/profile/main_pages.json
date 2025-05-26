@@ -2,6 +2,6 @@
   "src": [
     "pages/Index",
     "pages/Chatpages/ChatDetaill",
-    "pages/PayQtCode"
+    "pages/Pay/PayQtCode"
   ]
 }

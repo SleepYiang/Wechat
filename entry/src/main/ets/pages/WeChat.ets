@@ -25,6 +25,9 @@ struct WeChat {
       title: '扫一扫',
       icon: $r('app.media.ic_public_scan'),
       itemClick: async () => {
+        AlertDialog.show({
+          message: '2'
+        })
         //扫码参数
         let options: scanBarcode.ScanOptions = {
           scanTypes: [scanCore.ScanType.ALL],
@@ -44,7 +47,7 @@ struct WeChat {
       icon: $r('app.media.ic_public_receive'),
       itemClick: () => {
         router.pushUrl({
-          url: "pages/PayQtCode"
+          url: "pages/Pay/PayQtCode"
         })
       }
     }
@@ -77,6 +80,9 @@ struct WeChat {
         .padding({ left: 10, right: 10 })
         .height(45)
         .justifyContent(FlexAlign.Center)
+        .onClick(() => {
+          item.itemClick && item.itemClick()
+        })
       })
     }
     .width(120)
@@ -247,8 +253,6 @@ struct WeChat {
     .height("100%")
     .backgroundColor('#fff')
   }
-
-  //AxureShop可以找到多种的扫码类项目
 }
 
 export default WeChat
